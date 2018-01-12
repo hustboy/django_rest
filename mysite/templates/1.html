@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+                    <tr>
+                        <th data-field="cgi" data-align="center">cgi</th>
+                        <th data-field="created" data-align="center">created</th>
+                        <th data-field="nid" data-align="center">nid</th>
+                        <th data-field="dn" data-align="center">dn</th>
+                        <th data-field="userlabel" data-align="center">userlabel</th>
+                        <th data-field="rrc_attconnestab" data-align="center">rrc_attconnestab</th>
+                        <th data-field="rrc_succconnestab" data-align="center">rrc_succconnestab</th>
+                        <th data-field="erab_nbrattestab" data-align="center">erab_nbrattestab</th>
+                        <th data-field="erab_nbrsuccestab" data-align="center">erab_nbrsuccestab</th>
+                        <th data-field="context_attrelenb" data-align="center">context_attrelenb</th>
+                        <th data-field="context_attrelenb_normal" data-align="center">context_attrelenb_normal</th>
+                        <th data-field="context_succinitalsetup" data-align="center">context_succinitalsetup</th>
+                        <th data-field="context_nbrleft" data-align="center">context_nbrleft</th>
+                        <th data-field="erab_nbrreqrelenb" data-align="center">erab_nbrreqrelenb</th>
+                        <th data-field="erab_nbrreqrelenb_normal" data-align="center">erab_nbrreqrelenb_normal</th>
+                        <th data-field="erab_hofail" data-align="center">erab_hofail</th>
+                        <th data-field="erab_nbrleft" data-align="center">erab_nbrleft</th>
+                        <th data-field="erab_nbrhoinc" data-align="center">erab_nbrhoinc</th>
+                        <th data-field="rrc_attconnreestab" data-align="center">rrc_attconnreestab</th>
+                        <th data-field="ho_attoutinterenbs1" data-align="center">ho_attoutinterenbs1</th>
+                        <th data-field="ho_succoutinterenbs1" data-align="center">ho_succoutinterenbs1</th>
+                        <th data-field="ho_attoutinterenbx2" data-align="center">ho_attoutinterenbx2</th>
+                        <th data-field="ho_succoutinterenbx2" data-align="center">ho_succoutinterenbx2</th>
+                        <th data-field="ho_attoutintraenb" data-align="center">ho_attoutintraenb</th>
+                        <th data-field="ho_succoutintraenb" data-align="center">ho_succoutintraenb</th>
+                        <th data-field="iratho_attoutgeran" data-align="center">iratho_attoutgeran</th>
+                        <th data-field="iratho_succoutgeran" data-align="center">iratho_succoutgeran</th>
+                        <th data-field="iratho_attoututran" data-align="center">iratho_attoututran</th>
+                        <th data-field="iratho_succoututran" data-align="center">iratho_succoututran</th>
+                        <th data-field="pdcp_uppktdelaydl" data-align="center">pdcp_uppktdelaydl</th>
+                        <th data-field="pdcp_upoctul" data-align="center">pdcp_upoctul</th>
+                        <th data-field="pdcp_upoctdl" data-align="center">pdcp_upoctdl</th>
+                        <th data-field="rru_puschprbtotmeanul" data-align="center">rru_puschprbtotmeanul</th>
+                        <th data-field="rru_puschprbmeantot" data-align="center">rru_puschprbmeantot</th>
+                        <th data-field="rru_pdschprbtotmeandl" data-align="center">rru_pdschprbtotmeandl</th>
+                        <th data-field="rru_pdschprbmeantot" data-align="center">rru_pdschprbmeantot</th>
+                        <th data-field="rru_puschprbassn" data-align="center">rru_puschprbassn</th>
+                        <th data-field="rru_pdschprbassn" data-align="center">rru_pdschprbassn</th>
+                        <th data-field="rru_puschprbtot" data-align="center">rru_puschprbtot</th>
+                        <th data-field="rru_pdschprbtot" data-align="center">rru_pdschprbtot</th>
+                        <th data-field="pag_pagreceived" data-align="center">pag_pagreceived</th>
+                        <th data-field="pag_pagdiscarded" data-align="center">pag_pagdiscarded</th>
+                        <th data-field="rru_dtchprbassnul" data-align="center">rru_dtchprbassnul</th>
+                        <th data-field="rru_dtchprbassndl" data-align="center">rru_dtchprbassndl</th>
+                        <th data-field="rru_borrowfromscellprbtotdl" data-align="center">rru_borrowfromscellprbtotdl</th>
+                        <th data-field="rru_lendtopcellprbtotdl" data-align="center">rru_lendtopcellprbtotdl</th>
+                        <th data-field="rrc_effectiveconnmean" data-align="center">rrc_effectiveconnmean</th>
+
+
+
+
+
+
+                    </tr>
+
+
+            queryParams: function (params) {
+                if($('#busyhour').val()=="am"){
+                    return {
+
+
+                        created_0: starttime+" 08:00:00",
+                        created_1:starttime+" 11:00:00",
+                        dn__city_name:$('#cityname').val(),
+                        pager:'cusor'
+                    };
+
+                }else{
+                    return {
+
+
+                        created_0: starttime+" 18:00:00",
+                        created_1:starttime+" 21:00:00",
+                        dn__city_name:$('#cityname').val(),
+                        pager:'cusor'
+                    };
+
+                };
+
+            },
+
+
+            if($('#busyhour').val()=="am"){
+                tableurl='/alleutrancelltddpm/?created_0='+starttime+' 08:00:00&created_1='+starttime+' 11:00:00&dn__city_name='+$('#cityname').val()+'&pager=cusor';
+
+
+            }else{
+                tableurl='/alleutrancelltddpm/?created_0='+starttime+' 18:00:00&created_1='+starttime+' 21:00:00&dn__city_name='+$('#cityname').val()+'&pager=cusor';
+
+            };
+
+
+            $.getJSON(tableurl, function(data){
+                    alert(JSON.stringify(data));
+        });
+
+</body>
+</html>

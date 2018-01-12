@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-table/src/bootstrap-table.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-table-fixed-columns.css' %}" />
+    <link href="{% static 'bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/daterangepicker.css' %}" />
+
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'assets/dashboard.css' %}" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{% static 'assets/ie-emulation-modes-warning.js' %}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+
+
+.tdclass {
+
+
+    word-break: keep-all;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+
+            </button>
+            <a class="navbar-brand" href="#">湛总最棒！</a>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-1 sidebar">
+            <ul class="nav nav-sidebar">
+                <li ><a href="/index">zone_id查询</a></li>
+                <li ><a href="/busy">忙时查询</a></li>
+
+            </ul>
+
+
+
+
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-1 main">
+
+
+
+
+
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">选择时间段:</label>
+                        <div class="col-sm-2">
+
+                            <input  type="text" name="daterange" value="10/27/2016" />
+                        </div>
+                        <label class="control-label col-sm-1" for="txt_search_departmentname">选择地区:</label>
+                        <div class="col-sm-1">
+                            <select id="cityname", class="selectpicker form-control" >
+                                <option value="武汉">武汉</option>
+                                <option value="咸宁" selected="true" >咸宁</option>
+                                <option value="鄂州">鄂州</option>
+                                <option value="恩施">恩施</option>
+                                <option value="黄冈">黄冈</option>
+                                <option value="黄石">黄石</option>
+                                <option value="江汉">江汉</option>
+                                <option value="荆门">荆门</option>
+                                <option value="荆州">荆州</option>
+                                <option value="潜江">潜江</option>
+                                <option value="十堰">十堰</option>
+                                <option value="随州">随州</option>
+                                <option value="天门">天门</option>
+                                <option value="襄阳">襄阳</option>
+                                <option value="孝感">孝感</option>
+                                <option value="宜昌">宜昌</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <label class="control-label col-sm-1" for="txt_search_departmentname">选择忙时:</label>
+                        <div class="col-sm-2">
+                            <select id="busyhour", class="selectpicker form-control" >
+                                <option value="am" selected="true" >早忙时</option>
+                                <option value="pm">晚忙时</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-1" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+                        </div>
+                        <div class="col-sm-1" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_csv" class="btn btn-primary">CSV</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped " id="table"
+                       data-fixed-columns="true"
+                       data-fixed-number="3">
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'jquery/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap-select/js/bootstrap-select.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/moment.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/daterangepicker.js' %}"></script>
+
+
+
+
+<script src="{% static 'bootstrap-table/src/bootstrap-table.js' %}"></script>
+<script src="{% static 'bootstrap-table/src/locale/bootstrap-table-zh-CN.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-table-fixed-columns.js' %}"></script>
+<script src="{% static 'assets/docs.min.js' %}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{% static 'assets/ie10-viewport-bug-workaround.js' %}"></script>
+
+<script type="text/javascript">
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+    $(document).ready(function() {
+        var starttime='2016-10-27';
+        var endtime='2016-10-27';
+
+
+
+        $('input[name="daterange"]').daterangepicker({
+                     singleDatePicker: true,
+        showDropdowns: true
+
+                },
+                function(start, end, label) {
+
+
+
+
+
+
+
+                    starttime=start.format('YYYY-MM-DD');
+                    endtime=start.format('YYYY-MM-DD');
+
+
+                }
+        );
+
+
+
+
+
+
+
+
+
+
+
+        //当点击查询按钮的时候执行
+        //$("#btn_query").bind("click", initTable);
+        $('#btn_query').click(function () {
+            //$('#table').bootstrapTable('refresh');
+
+            $("#table").bootstrapTable('destroy');
+
+
+
+
+
+
+
+            $("#table").bootstrapTable({
+                url: '/alleutrancelltddpm/',
+            dataType: "json",
+            height:"650",
+            pagination: true, //分页
+            singleSelect: false,
+            search: false, //显示搜索框
+                pageSize:50,
+                pageList:[50],
+            sidePagination: "server", //服务端处理分页
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            columns: [{
+                field: 'cgi',
+                title: 'cgi',
+                align: 'center'
+            },{
+                field: 'created',
+                title: 'created',
+                align: 'center'
+            }, {
+                field: 'userlabel',
+                title: 'userlabel',
+                align: 'center',
+                class:'tdclass'
+
+
+            }, {
+                field: 'nid',
+                title: 'nid',
+                align: 'center'
+            }, {
+                field: 'dn',
+                title: 'dn',
+                align: 'center',
+                class:'tdclass'
+
+            }, {
+                field: 'rrc_attconnestab',
+                title: 'rrc_attconnestab',
+                align: 'center'
+            }, {
+                field: 'rrc_succconnestab',
+                title: 'rrc_succconnestab',
+                align: 'center'
+            }, {
+                field: 'erab_nbrattestab',
+                title: 'erab_nbrattestab',
+                align: 'center'
+            }, {
+                field: 'erab_nbrsuccestab',
+                title: 'erab_nbrsuccestab',
+                align: 'center'
+            }, {
+                field: 'context_attrelenb',
+                title: 'context_attrelenb',
+                align: 'center'
+            }, {
+                field: 'context_attrelenb_normal',
+                title: 'context_attrelenb_normal',
+                align: 'center'
+            }, {
+                field: 'context_succinitalsetup',
+                title: 'context_succinitalsetup',
+                align: 'center'
+            }, {
+                field: 'context_nbrleft',
+                title: 'context_nbrleft',
+                align: 'center'
+            }, {
+                field: 'erab_nbrreqrelenb',
+                title: 'erab_nbrreqrelenb',
+                align: 'center'
+            }, {
+                field: 'erab_nbrreqrelenb_normal',
+                title: 'erab_nbrreqrelenb_normal',
+                align: 'center'
+            }, {
+                field: 'erab_hofail',
+                title: 'erab_hofail',
+                align: 'center'
+            }, {
+                field: 'erab_nbrleft',
+                title: 'erab_nbrleft',
+                align: 'center'
+            }, {
+                field: 'erab_nbrhoinc',
+                title: 'erab_nbrhoinc',
+                align: 'center'
+            }, {
+                field: 'rrc_attconnreestab',
+                title: 'rrc_attconnreestab',
+                align: 'center'
+            }, {
+                field: 'ho_attoutinterenbs1',
+                title: 'ho_attoutinterenbs1',
+                align: 'center'
+            }, {
+                field: 'ho_succoutinterenbs1',
+                title: 'ho_succoutinterenbs1',
+                align: 'center'
+            }, {
+                field: 'ho_attoutinterenbx2',
+                title: 'ho_attoutinterenbx2',
+                align: 'center'
+            }, {
+                field: 'ho_succoutinterenbx2',
+                title: 'ho_succoutinterenbx2',
+                align: 'center'
+            }, {
+                field: 'ho_attoutintraenb',
+                title: 'ho_attoutintraenb',
+                align: 'center'
+            }, {
+                field: 'ho_succoutintraenb',
+                title: 'ho_succoutintraenb',
+                align: 'center'
+            }, {
+                field: 'iratho_attoutgeran',
+                title: 'iratho_attoutgeran',
+                align: 'center'
+            }, {
+                field: 'iratho_succoutgeran',
+                title: 'iratho_succoutgeran',
+                align: 'center'
+            }, {
+                field: 'iratho_attoututran',
+                title: 'iratho_attoututran',
+                align: 'center'
+            }, {
+                field: 'iratho_succoututran',
+                title: 'iratho_succoututran',
+                align: 'center'
+            }, {
+                field: 'pdcp_uppktdelaydl',
+                title: 'pdcp_uppktdelaydl',
+                align: 'center'
+            }, {
+                field: 'pdcp_upoctul',
+                title: 'pdcp_upoctul',
+                align: 'center'
+            }, {
+                field: 'pdcp_upoctdl',
+                title: 'pdcp_upoctdl',
+                align: 'center'
+            }, {
+                field: 'rru_puschprbtotmeanul',
+                title: 'rru_puschprbtotmeanul',
+                align: 'center'
+            }, {
+                field: 'rru_puschprbmeantot',
+                title: 'rru_puschprbmeantot',
+                align: 'center'
+            }, {
+                field: 'rru_pdschprbtotmeandl',
+                title: 'rru_pdschprbtotmeandl',
+                align: 'center'
+            }, {
+                field: 'rru_pdschprbmeantot',
+                title: 'rru_pdschprbmeantot',
+                align: 'center'
+            }, {
+                field: 'rru_puschprbassn',
+                title: 'rru_puschprbassn',
+                align: 'center'
+            }, {
+                field: 'rru_pdschprbassn',
+                title: 'rru_pdschprbassn',
+                align: 'center'
+            }, {
+                field: 'rru_puschprbtot',
+                title: 'rru_puschprbtot',
+                align: 'center'
+            }, {
+                field: 'rru_pdschprbtot',
+                title: 'rru_pdschprbtot',
+                align: 'center'
+            }, {
+                field: 'pag_pagreceived',
+                title: 'pag_pagreceived',
+                align: 'center'
+            }, {
+                field: 'pag_pagdiscarded',
+                title: 'pag_pagdiscarded',
+                align: 'center'
+            }, {
+                field: 'rru_dtchprbassnul',
+                title: 'rru_dtchprbassnul',
+                align: 'center'
+            }, {
+                field: 'rru_dtchprbassndl',
+                title: 'rru_dtchprbassndl',
+                align: 'center'
+            }, {
+                field: 'rru_borrowfromscellprbtotdl',
+                title: 'rru_borrowfromscellprbtotdl',
+                align: 'center'
+            }, {
+                field: 'rru_lendtopcellprbtotdl',
+                title: 'rru_lendtopcellprbtotdl',
+                align: 'center'
+            }, {
+                field: 'rrc_effectiveconnmean',
+                title: 'rrc_effectiveconnmean',
+                align: 'center'
+            }],
+
+
+                queryParams: function (params) {
+                if($('#busyhour').val()=="am"){
+                    return {
+
+                                            limit: params.limit, //页面大小
+                    offset: params.offset, //页码
+
+
+                        created_0: starttime+" 08:00:00",
+                        created_1:starttime+" 11:00:00",
+                        dn__city_name:$('#cityname').val(),
+                        pager:'cusor'
+                    };
+
+                }else{
+                    return {
+
+                                            limit: params.limit, //页面大小
+                    offset: params.offset, //页码
+
+
+                        created_0: starttime+" 18:00:00",
+                        created_1:starttime+" 21:00:00",
+                        dn__city_name:$('#cityname').val(),
+                        pager:'cusor'
+                    };
+
+                };
+
+            },
+
+
+
+            responseHandler:function (res) {
+
+
+                return {
+
+                    rows: res.results,
+                    total:res.count
+
+
+                };
+            }
+
+        });
+
+        });
+
+        $("#btn_csv").click(function () {
+
+            if($('#busyhour').val()=="am"){
+                    location.href='/csv_am/?created='+starttime+' 00:00:00'+'&cityname='+$('#cityname').val();
+
+                }else{
+                    location.href='/csv_pm/?created='+starttime+' 00:00:00'+'&cityname='+$('#cityname').val();
+
+                };
+
+
+    });
+
+
+
+    });
+</script>
+
+
+
+
+</body>
+</html>
