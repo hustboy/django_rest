@@ -1,0 +1,1340 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.1
+-- Dumped by pg_dump version 9.5.1
+
+-- Started on 2017-01-06 11:13:03 CST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12397)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2370 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 192 (class 1259 OID 16467)
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 16465)
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2371 (class 0 OID 0)
+-- Dependencies: 191
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- TOC entry 194 (class 1259 OID 16477)
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 16475)
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2372 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- TOC entry 190 (class 1259 OID 16459)
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 16457)
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2373 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- TOC entry 196 (class 1259 OID 16485)
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE auth_user OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16495)
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_groups OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 16493)
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_groups_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2374 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- TOC entry 195 (class 1259 OID 16483)
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2375 (class 0 OID 0)
+-- Dependencies: 195
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- TOC entry 200 (class 1259 OID 16503)
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_user_permissions OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 16501)
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2376 (class 0 OID 0)
+-- Dependencies: 199
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16586)
+-- Name: authtoken_token; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE authtoken_token (
+    key character varying(40) NOT NULL,
+    created timestamp with time zone NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE authtoken_token OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16563)
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 16561)
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2377 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- TOC entry 188 (class 1259 OID 16449)
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 16447)
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2378 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- TOC entry 186 (class 1259 OID 16438)
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 16436)
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2379 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16621)
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 16385)
+-- Name: enbfunction_cm_temp; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE enbfunction_cm_temp (
+    datetime date,
+    nid integer,
+    reldn text,
+    dn text,
+    userlabel text,
+    enbid text,
+    administrativestate text,
+    operationalstate text,
+    longitude double precision,
+    latitude double precision
+);
+
+
+ALTER TABLE enbfunction_cm_temp OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 24619)
+-- Name: eutrancelltdd; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE eutrancelltdd (
+    nid integer,
+    dn text,
+    userlabel text,
+    enb_dn text,
+    enb_userlabel text,
+    cgi text,
+    earfcn integer,
+    pci integer,
+    bandindicator integer,
+    tac integer,
+    operationalstate text,
+    enb_administrativestate text,
+    enb_operationalstate text,
+    enb_longitude double precision,
+    enb_latitude double precision,
+    city_name text,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE eutrancelltdd OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 24673)
+-- Name: eutrancelltdd_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE eutrancelltdd_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE eutrancelltdd_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2380 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: eutrancelltdd_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE eutrancelltdd_id_seq OWNED BY eutrancelltdd.id;
+
+
+--
+-- TOC entry 182 (class 1259 OID 16391)
+-- Name: eutrancelltdd_pm; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE eutrancelltdd_pm (
+    created timestamp without time zone,
+    nid integer,
+    dn text,
+    userlabel text,
+    rrc_attconnestab double precision,
+    rrc_succconnestab double precision,
+    erab_nbrattestab double precision,
+    erab_nbrsuccestab double precision,
+    context_attrelenb double precision,
+    context_attrelenb_normal double precision,
+    context_succinitalsetup double precision,
+    context_nbrleft double precision,
+    erab_nbrreqrelenb double precision,
+    erab_nbrreqrelenb_normal double precision,
+    erab_hofail double precision,
+    erab_nbrleft double precision,
+    erab_nbrhoinc double precision,
+    rrc_attconnreestab double precision,
+    ho_attoutinterenbs1 double precision,
+    ho_succoutinterenbs1 double precision,
+    ho_attoutinterenbx2 double precision,
+    ho_succoutinterenbx2 double precision,
+    ho_attoutintraenb double precision,
+    ho_succoutintraenb double precision,
+    iratho_attoutgeran double precision,
+    iratho_succoutgeran double precision,
+    iratho_attoututran double precision,
+    iratho_succoututran double precision,
+    pdcp_uppktdelaydl double precision,
+    pdcp_upoctul double precision,
+    pdcp_upoctdl double precision,
+    rru_puschprbtotmeanul double precision,
+    rru_puschprbmeantot double precision,
+    rru_pdschprbtotmeandl double precision,
+    rru_pdschprbmeantot double precision,
+    rru_puschprbassn double precision,
+    rru_pdschprbassn double precision,
+    rru_puschprbtot double precision,
+    rru_pdschprbtot double precision,
+    pag_pagreceived double precision,
+    pag_pagdiscarded double precision,
+    rru_dtchprbassnul double precision,
+    rru_dtchprbassndl double precision,
+    rru_borrowfromscellprbtotdl double precision,
+    rru_lendtopcellprbtotdl double precision,
+    rrc_effectiveconnmean double precision,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE eutrancelltdd_pm OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 16426)
+-- Name: eutrancelltdd_pm_20161027; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE eutrancelltdd_pm_20161027 (
+    CONSTRAINT eutrancelltdd_pm_20161027_begintime_check CHECK (((created >= '2016-10-27 00:00:00'::timestamp without time zone) AND (created < '2016-10-28 00:00:00'::timestamp without time zone)))
+)
+INHERITS (eutrancelltdd_pm);
+
+
+ALTER TABLE eutrancelltdd_pm_20161027 OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 16414)
+-- Name: eutrancelltdd_pm_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE eutrancelltdd_pm_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE eutrancelltdd_pm_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2381 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: eutrancelltdd_pm_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE eutrancelltdd_pm_id_seq OWNED BY eutrancelltdd_pm.id;
+
+
+--
+-- TOC entry 205 (class 1259 OID 16606)
+-- Name: mysite_snippet; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE mysite_snippet (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    title character varying(100) NOT NULL,
+    code text NOT NULL,
+    linenos boolean NOT NULL,
+    language character varying(100) NOT NULL,
+    style character varying(100) NOT NULL,
+    highlighted text NOT NULL,
+    owner_id integer NOT NULL
+);
+
+
+ALTER TABLE mysite_snippet OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 16604)
+-- Name: mysite_snippet_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE mysite_snippet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mysite_snippet_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2382 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: mysite_snippet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE mysite_snippet_id_seq OWNED BY mysite_snippet.id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 24613)
+-- Name: zone_list; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE zone_list (
+    zone_id integer,
+    zone_name text,
+    cgi text,
+    city_name text,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE zone_list OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 24635)
+-- Name: zone_list_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE zone_list_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE zone_list_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2383 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: zone_list_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE zone_list_id_seq OWNED BY zone_list.id;
+
+
+--
+-- TOC entry 2124 (class 2604 OID 16470)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- TOC entry 2125 (class 2604 OID 16480)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2123 (class 2604 OID 16462)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- TOC entry 2126 (class 2604 OID 16488)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 2127 (class 2604 OID 16498)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- TOC entry 2128 (class 2604 OID 16506)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2129 (class 2604 OID 16566)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- TOC entry 2122 (class 2604 OID 16452)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 2121 (class 2604 OID 16441)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- TOC entry 2133 (class 2604 OID 24675)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd ALTER COLUMN id SET DEFAULT nextval('eutrancelltdd_id_seq'::regclass);
+
+
+--
+-- TOC entry 2118 (class 2604 OID 16416)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd_pm ALTER COLUMN id SET DEFAULT nextval('eutrancelltdd_pm_id_seq'::regclass);
+
+
+--
+-- TOC entry 2119 (class 2604 OID 16429)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd_pm_20161027 ALTER COLUMN id SET DEFAULT nextval('eutrancelltdd_pm_id_seq'::regclass);
+
+
+--
+-- TOC entry 2131 (class 2604 OID 16609)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mysite_snippet ALTER COLUMN id SET DEFAULT nextval('mysite_snippet_id_seq'::regclass);
+
+
+--
+-- TOC entry 2132 (class 2604 OID 24637)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY zone_list ALTER COLUMN id SET DEFAULT nextval('zone_list_id_seq'::regclass);
+
+
+--
+-- TOC entry 2155 (class 2606 OID 16474)
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2161 (class 2606 OID 16529)
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- TOC entry 2163 (class 2606 OID 16482)
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2157 (class 2606 OID 16472)
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2150 (class 2606 OID 16515)
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- TOC entry 2152 (class 2606 OID 16464)
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2172 (class 2606 OID 16500)
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2174 (class 2606 OID 16544)
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- TOC entry 2165 (class 2606 OID 16490)
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2178 (class 2606 OID 16508)
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2180 (class 2606 OID 16558)
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- TOC entry 2168 (class 2606 OID 16492)
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 2187 (class 2606 OID 16590)
+-- Name: authtoken_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_pkey PRIMARY KEY (key);
+
+
+--
+-- TOC entry 2189 (class 2606 OID 16592)
+-- Name: authtoken_token_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_user_id_key UNIQUE (user_id);
+
+
+--
+-- TOC entry 2184 (class 2606 OID 16572)
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2145 (class 2606 OID 16456)
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- TOC entry 2147 (class 2606 OID 16454)
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2143 (class 2606 OID 16446)
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2195 (class 2606 OID 16628)
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- TOC entry 2192 (class 2606 OID 16614)
+-- Name: mysite_snippet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mysite_snippet
+    ADD CONSTRAINT mysite_snippet_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2138 (class 2606 OID 16425)
+-- Name: pm_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd_pm
+    ADD CONSTRAINT pm_id PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2202 (class 2606 OID 24631)
+-- Name: tdd_cgi; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd
+    ADD CONSTRAINT tdd_cgi UNIQUE (cgi);
+
+
+--
+-- TOC entry 2204 (class 2606 OID 24633)
+-- Name: tdd_dn; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd
+    ADD CONSTRAINT tdd_dn UNIQUE (dn);
+
+
+--
+-- TOC entry 2153 (class 1259 OID 16517)
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- TOC entry 2158 (class 1259 OID 16530)
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- TOC entry 2159 (class 1259 OID 16531)
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- TOC entry 2148 (class 1259 OID 16516)
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- TOC entry 2169 (class 1259 OID 16546)
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- TOC entry 2170 (class 1259 OID 16545)
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- TOC entry 2175 (class 1259 OID 16560)
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- TOC entry 2176 (class 1259 OID 16559)
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- TOC entry 2166 (class 1259 OID 16532)
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- TOC entry 2185 (class 1259 OID 16598)
+-- Name: authtoken_token_key_10f0b77e_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX authtoken_token_key_10f0b77e_like ON authtoken_token USING btree (key varchar_pattern_ops);
+
+
+--
+-- TOC entry 2181 (class 1259 OID 16583)
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- TOC entry 2182 (class 1259 OID 16584)
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- TOC entry 2193 (class 1259 OID 16629)
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- TOC entry 2196 (class 1259 OID 16630)
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- TOC entry 2199 (class 1259 OID 24634)
+-- Name: eutrancelltdd_cgi_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX eutrancelltdd_cgi_idx ON eutrancelltdd USING btree (cgi);
+
+
+--
+-- TOC entry 2200 (class 1259 OID 24625)
+-- Name: eutrancelltdd_dn_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX eutrancelltdd_dn_index ON eutrancelltdd USING btree (dn);
+
+
+--
+-- TOC entry 2139 (class 1259 OID 16434)
+-- Name: eutrancelltdd_pm_20161027_index_begintime; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX eutrancelltdd_pm_20161027_index_begintime ON eutrancelltdd_pm_20161027 USING btree (created);
+
+
+--
+-- TOC entry 2140 (class 1259 OID 16435)
+-- Name: eutrancelltdd_pm_20161027_index_dn; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX eutrancelltdd_pm_20161027_index_dn ON eutrancelltdd_pm_20161027 USING btree (dn);
+
+
+--
+-- TOC entry 2197 (class 1259 OID 24650)
+-- Name: fki_cgi_cgi; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_cgi_cgi ON zone_list USING btree (cgi);
+
+
+--
+-- TOC entry 2141 (class 1259 OID 24661)
+-- Name: fki_dn_dn; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_dn_dn ON eutrancelltdd_pm_20161027 USING btree (dn);
+
+
+--
+-- TOC entry 2134 (class 1259 OID 24672)
+-- Name: fki_f_dn_dn; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_f_dn_dn ON eutrancelltdd_pm USING btree (dn);
+
+
+--
+-- TOC entry 2190 (class 1259 OID 16620)
+-- Name: mysite_snippet_5e7b1936; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mysite_snippet_5e7b1936 ON mysite_snippet USING btree (owner_id);
+
+
+--
+-- TOC entry 2135 (class 1259 OID 24576)
+-- Name: pm_created; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX pm_created ON eutrancelltdd_pm USING btree (created);
+
+
+--
+-- TOC entry 2136 (class 1259 OID 24578)
+-- Name: pm_dn; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX pm_dn ON eutrancelltdd_pm USING btree (dn);
+
+
+--
+-- TOC entry 2198 (class 1259 OID 24644)
+-- Name: zone_cgi; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX zone_cgi ON zone_list USING btree (cgi);
+
+
+--
+-- TOC entry 2209 (class 2606 OID 16523)
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2208 (class 2606 OID 16518)
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2207 (class 2606 OID 16509)
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2211 (class 2606 OID 16538)
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2210 (class 2606 OID 16533)
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2213 (class 2606 OID 16552)
+-- Name: auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2212 (class 2606 OID 16547)
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2216 (class 2606 OID 16599)
+-- Name: authtoken_token_user_id_35299eff_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY authtoken_token
+    ADD CONSTRAINT authtoken_token_user_id_35299eff_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2218 (class 2606 OID 24645)
+-- Name: cgi_cgi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY zone_list
+    ADD CONSTRAINT cgi_cgi FOREIGN KEY (cgi) REFERENCES eutrancelltdd(cgi);
+
+
+--
+-- TOC entry 2214 (class 2606 OID 16573)
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2215 (class 2606 OID 16578)
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2206 (class 2606 OID 24656)
+-- Name: dn_dn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd_pm_20161027
+    ADD CONSTRAINT dn_dn FOREIGN KEY (dn) REFERENCES eutrancelltdd(dn);
+
+
+--
+-- TOC entry 2205 (class 2606 OID 24667)
+-- Name: f_dn_dn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY eutrancelltdd_pm
+    ADD CONSTRAINT f_dn_dn FOREIGN KEY (dn) REFERENCES eutrancelltdd(dn);
+
+
+--
+-- TOC entry 2217 (class 2606 OID 16615)
+-- Name: mysite_snippet_owner_id_4b11a7b6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mysite_snippet
+    ADD CONSTRAINT mysite_snippet_owner_id_4b11a7b6_fk_auth_user_id FOREIGN KEY (owner_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2369 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2017-01-06 11:13:04 CST
+
+--
+-- PostgreSQL database dump complete
+--
+
